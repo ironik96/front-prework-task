@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Task1.Services;
 
 namespace Task1
 {
@@ -77,7 +78,9 @@ namespace Task1
 
         protected void DetailsLink_Click(object sender, EventArgs e)
         {
-            Response.Redirect($"CustomerDetails.aspx?civil_id={inputTextBox.Text}");
+            EncryptionService service = new EncryptionService();
+            string maskedCivilID = service.Encrypt(inputTextBox.Text);
+            Response.Redirect($"CustomerDetails.aspx?civil_id={maskedCivilID}");
         }
 
     }

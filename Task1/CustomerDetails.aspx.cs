@@ -8,6 +8,7 @@ using System.Reflection.Emit;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Task1.Services;
 
 namespace Task1
 {
@@ -20,8 +21,11 @@ namespace Task1
         public string CivilId { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
-            CivilId = Request.QueryString["civil_id"];
-
+            if (Request.QueryString.Count>0)
+            {
+                EncryptionService service = new EncryptionService();
+                CivilId = service.Decrypt(Request.QueryString["civil_id"]);
+            }
             var connectionString = ConfigurationManager.ConnectionStrings["CustomerAccount"].ConnectionString;
             SqlConnection connection = new SqlConnection(connectionString);
 
