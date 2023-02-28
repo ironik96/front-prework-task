@@ -19,6 +19,10 @@ div.body-content{
 
 .cus-info-row{
     display: flex;
-    justify-content: space-between;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
+    gap: 1rem;
+}
+
+.cus-info-title{
+    font-weight: bold;
 }

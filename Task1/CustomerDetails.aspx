@@ -1,13 +1,21 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CustomerDetails.aspx.cs" Inherits="Task1.WebForm1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="row cus-info">
-    <h1><%= Name %></h1>
+    <div class="row jumbotron">
+    <h1><%= Name %> <span class="badge badge-light"><%= Gender %></span></h1>
     <div class="cus-info-row">
-        <div>Civil ID</div>
+        <div class="cus-info-title">Civil ID: </div>
         <div><%= CivilId %></div>
     </div>
-        </div>
+        <div class="cus-info-row">
+        <div class="cus-info-title">Phone Number: </div>
+        <div><%= PhoneNumber %></div>
+    </div>
+        <div class="cus-info-row">
+        <div class="cus-info-title">Address: </div>
+        <div><%= Address %></div>
+    </div>
+    </div>
     
 
     <div class="row">

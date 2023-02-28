@@ -19,6 +19,28 @@ namespace Task1
             get; set;
         }
         public string CivilId { get; set; }
+        public string PhoneNumber { get; set; }
+
+        private string area;
+        private string block;
+        private string street;
+        private string house;
+        private bool gender;
+        public string Address
+        {
+            get
+            {
+                return $"{area}, block: {block}, st: {street}, house: {house}";
+            }
+        }
+        
+        public string Gender
+        {
+            get
+            {
+                return gender ? "MALE" : "FEMALE";
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Request.QueryString.Count>0)
@@ -44,18 +66,13 @@ namespace Task1
                 adapter.Fill(table);
 
                 Name = table.Rows[0]["customer_name"].ToString();
+                PhoneNumber = table.Rows[0]["phone_number"].ToString();
+                area = table.Rows[0]["area"].ToString();
+                block = table.Rows[0]["block_number"].ToString();
+                street = table.Rows[0]["street"].ToString();
+                house = table.Rows[0]["house"].ToString();
+                gender = Convert.ToBoolean(table.Rows[0]["gender"]);
 
-                DataColumn gender = new DataColumn("genderString", typeof(string));
-                table.Columns.Add(gender);
-                table.Columns["genderString"].SetOrdinal(2);
-                foreach (DataRow row in table.Rows)
-                {
-                    bool isMale = Convert.ToBoolean(row["gender"]);
-                    string genderString = isMale ? "Male" : "Female";
-
-                    row["genderString"] = genderString;
-                }
-                table.Columns.Remove("gender");
 
                 CustomerDetail.DataSource = table;
                 CustomerDetail.DataBind();

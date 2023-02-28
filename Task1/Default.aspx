@@ -14,7 +14,20 @@
         
         <div class="col-12">
             <div class="table-responsive"></div>
-            <asp:GridView ID="GridView1" CssClass="table table-striped table-bordered" runat="server" OnDataBound="DetailsButton_DataBound" AutoGenerateColumns="True"></asp:GridView>
+            <asp:GridView ID="GridView1" CssClass="table table-striped table-bordered" runat="server" OnDataBound="DetailsButton_DataBound" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:BoundField DataField="civil_id" HeaderText="Civil Id" />
+                    <asp:BoundField DataField="customer_name" HeaderText="Name" />
+                    <asp:BoundField DataField="genderString" HeaderText="Gender" />
+                    <asp:BoundField DataField="phone_number" HeaderText="Phone Number" />
+                    <asp:BoundField DataField="area" HeaderText="Area" />
+                    <asp:BoundField DataField="block_number" HeaderText="Block" />
+                    <asp:BoundField DataField="street" HeaderText="Street" />
+                    <asp:BoundField DataField="house" HeaderText="House" />
+                    <asp:BoundField DataField="profile_type_name" HeaderText="Segment" />
+                </Columns>
+
+            </asp:GridView>
         </div>
     </div>
     <div class="row text-center">
