@@ -52,22 +52,40 @@ namespace Task1
 
         protected void UpdateSegment_Click(object sender, EventArgs e)
         {
-            string updatedSegmentName = SegmentInputBox.Text;
+            string updatedSegmentName = SegmentInputBox_Edit.Text;
             if (updatedSegmentName.Equals("")) return;
             string segmentID = ProfileTypeList.SelectedValue;
 
             // update datatable
             DataRow row = ProfileTable.Select($"{TYPE_ID_COLUMN} = {segmentID}")[0];
             row[PROFILE_NAME_COLUMN] = updatedSegmentName;
-
             SegmentAdapter.UpdateCommand.Parameters[$"@{TYPE_ID_COLUMN}"].Value = segmentID;
             SegmentAdapter.UpdateCommand.Parameters[$"@{PROFILE_NAME_COLUMN}"].Value = updatedSegmentName;
             int effectedRows = SegmentAdapter.Update(ProfileTable);
-            if(effectedRows > 0)
-                ProfileTypeList.DataBind();
             
+            if (effectedRows > 0)
+                ProfileTypeList.DataBind();
 
 
+
+        }
+
+        protected void DeleteSegment_Click(object sender, EventArgs e)
+        {
+            string segmentID = ProfileTypeList.SelectedValue;
+
+            DataRow row = ProfileTable.Select($"{TYPE_ID_COLUMN} = {segmentID}")[0];
+            row[IS_ACTIVE_COLUMN] = 0;
+            SegmentAdapter.UpdateCommand.Parameters[$"@{TYPE_ID_COLUMN}"].Value = segmentID;
+            SegmentAdapter.UpdateCommand.Parameters[$"@{IS_ACTIVE_COLUMN}"].Value = 0;
+            int effectedRows = SegmentAdapter.Update(ProfileTable);
+
+            if (effectedRows > 0)
+            {
+                row.Delete();
+                ProfileTypeList.DataBind();
+            }
+          
         }
 
         protected SqlDataAdapter CreateSegmentAdapter(SqlConnection connection)
@@ -88,14 +106,6 @@ namespace Task1
             command.Parameters.Add($"@{PROFILE_NAME_COLUMN}", SqlDbType.VarChar);
             command.Parameters.Add($"@{IS_ACTIVE_COLUMN}", SqlDbType.Bit);
             adapter.UpdateCommand = command;
-
-            // Create the DeleteCommand.
-            command = new SqlCommand(DELETE_PROFILE_PROCEDURE, connection);
-            command.CommandType = CommandType.StoredProcedure;
-
-            // Add the parameters for the DeleteCommand.
-            command.Parameters.Add($"@{TYPE_ID_COLUMN}", SqlDbType.Int);
-            adapter.DeleteCommand = command;
 
             return adapter;
         }

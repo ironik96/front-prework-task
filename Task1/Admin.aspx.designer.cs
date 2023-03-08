@@ -24,30 +24,21 @@ namespace Task1
         protected global::System.Web.UI.WebControls.DropDownList ProfileTypeList;
 
         /// <summary>
-        /// Delete control.
+        /// SegmentInputBox_Add control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Delete;
+        protected global::System.Web.UI.WebControls.TextBox SegmentInputBox_Add;
 
         /// <summary>
-        /// SegmentInputBox control.
+        /// SegmentInputBox_Edit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SegmentInputBox;
-
-        /// <summary>
-        /// UpdateSegment control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button UpdateSegment;
+        protected global::System.Web.UI.WebControls.TextBox SegmentInputBox_Edit;
     }
 }
