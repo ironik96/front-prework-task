@@ -28,7 +28,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <asp:Button CssClass="btn btn-primary" runat="server" Text="Update" data-dismiss="modal" UseSubmitBehavior="false" OnClick="UpdateSegment_Click"/>
+                    <asp:Button CssClass="btn btn-primary" runat="server" Text="Add" data-dismiss="modal" UseSubmitBehavior="false" OnClick="AddSegment_Click"/>
                 </div>
             </div>
 

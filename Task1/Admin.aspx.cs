@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text;
+using System.Data.Common;
 
 namespace Task1
 {
@@ -16,37 +17,51 @@ namespace Task1
         // Column Fields
         private const string TYPE_ID_COLUMN = "id";
         private const string PROFILE_NAME_COLUMN = "profile_type_name";
+        private const string IS_ACTIVE_COLUMN = "is_active";
 
         // Procedures
-        private const string IS_ACTIVE_COLUMN = "is_active";
         private const string GET_PROFILE_PROCEDURE = "GetProfileTypes";
+        private const string CREATE_PROFILE_PROCEDURE = "CreateProfileType";
         private const string UPDATE_PROFILE_PROCEDURE = "UpdateProfileType";
-        private const string DELETE_PROFILE_PROCEDURE = "DeleteProfileType";
 
 
         private readonly string ConnectionString = ConfigurationManager.ConnectionStrings["CustomerAccount"].ConnectionString;
         private SqlDataAdapter SegmentAdapter;
-        private DataTable ProfileTable;
+        private DataTable ProfileTable
+        {
+            get
+            {
+                return ViewState["ProfileTable"] as DataTable;
+            }
+            set
+            {
+                ViewState["ProfileTable"] = value;
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             SqlConnection Connection = new SqlConnection(ConnectionString);
-
-            
             SegmentAdapter = CreateSegmentAdapter(Connection);
-            ProfileTable = new DataTable();
-            BindDropDown(SegmentAdapter, ProfileTable, ProfileTypeList, TYPE_ID_COLUMN, PROFILE_NAME_COLUMN);
 
+            if (!IsPostBack)
+                ReadTables();
         }
-
-        private void BindDropDown(SqlDataAdapter DataAdapter, DataTable Table, DropDownList DropDown, string ValueField, string TextField)
+        protected void AddSegment_Click(object sender, EventArgs e)
         {
-            DataAdapter.Fill(Table);
+            string newSegmentName = SegmentInputBox_Add.Text;
+            if (newSegmentName.Equals("")) return;
 
-            DropDown.DataSource = Table;
-            DropDown.DataValueField = ValueField;
-            DropDown.DataTextField = TextField;
-            DropDown.DataBind();
+
+            // insert to datatable
+            MarkTableInserted(ProfileTable);
+            SegmentAdapter.InsertCommand.Parameters[$"@{PROFILE_NAME_COLUMN}"].Value = newSegmentName;
+            int effectedRows = SegmentAdapter.Update(ProfileTable);
+
+            if (effectedRows > 0)
+                ReadTables();
+
+
 
         }
 
@@ -56,15 +71,13 @@ namespace Task1
             if (updatedSegmentName.Equals("")) return;
             string segmentID = ProfileTypeList.SelectedValue;
 
-            // update datatable
-            DataRow row = ProfileTable.Select($"{TYPE_ID_COLUMN} = {segmentID}")[0];
-            row[PROFILE_NAME_COLUMN] = updatedSegmentName;
+            MarkTableUpdated(ProfileTable);
             SegmentAdapter.UpdateCommand.Parameters[$"@{TYPE_ID_COLUMN}"].Value = segmentID;
             SegmentAdapter.UpdateCommand.Parameters[$"@{PROFILE_NAME_COLUMN}"].Value = updatedSegmentName;
             int effectedRows = SegmentAdapter.Update(ProfileTable);
-            
+
             if (effectedRows > 0)
-                ProfileTypeList.DataBind();
+                ReadTables();
 
 
 
@@ -74,18 +87,14 @@ namespace Task1
         {
             string segmentID = ProfileTypeList.SelectedValue;
 
-            DataRow row = ProfileTable.Select($"{TYPE_ID_COLUMN} = {segmentID}")[0];
-            row[IS_ACTIVE_COLUMN] = 0;
+            MarkTableUpdated(ProfileTable);
             SegmentAdapter.UpdateCommand.Parameters[$"@{TYPE_ID_COLUMN}"].Value = segmentID;
             SegmentAdapter.UpdateCommand.Parameters[$"@{IS_ACTIVE_COLUMN}"].Value = 0;
             int effectedRows = SegmentAdapter.Update(ProfileTable);
 
             if (effectedRows > 0)
-            {
-                row.Delete();
-                ProfileTypeList.DataBind();
-            }
-          
+                ReadTables();
+
         }
 
         protected SqlDataAdapter CreateSegmentAdapter(SqlConnection connection)
@@ -107,7 +116,41 @@ namespace Task1
             command.Parameters.Add($"@{IS_ACTIVE_COLUMN}", SqlDbType.Bit);
             adapter.UpdateCommand = command;
 
+            // Create the InsertCommand.
+            command = new SqlCommand(CREATE_PROFILE_PROCEDURE, connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            // Add the parameters for the InsertCommand.
+            command.Parameters.Add($"@{PROFILE_NAME_COLUMN}", SqlDbType.VarChar);
+            adapter.InsertCommand = command;
+
             return adapter;
+        }
+
+        private void ReadTables()
+        {
+            ProfileTable = new DataTable();
+            BindDropDown(SegmentAdapter, ProfileTable, ProfileTypeList, TYPE_ID_COLUMN, PROFILE_NAME_COLUMN);
+        }
+
+        private void BindDropDown(SqlDataAdapter DataAdapter, DataTable Table, DropDownList DropDown, string ValueField, string TextField)
+        {
+            DataAdapter.Fill(Table);
+
+            DropDown.DataSource = Table;
+            DropDown.DataValueField = ValueField;
+            DropDown.DataTextField = TextField;
+            DropDown.DataBind();
+
+        }
+
+        private void MarkTableUpdated(DataTable Table)
+        {
+            if (Table.Rows.Count != 0) Table.Rows[0].SetModified();
+        }
+        private void MarkTableInserted(DataTable Table)
+        {
+            Table.Rows.Add(Table.NewRow());
         }
     }
 }
