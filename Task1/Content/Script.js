@@ -1,7 +1,5 @@
-﻿isEditSegment = false;
-isEditAccountType = false;
-isEditCardType = false;
-
-toggleIsEditSegment = () => isEditSegment = !isEditSegment;
-toggleIsEditAccountType = () => isEditAccountType = !isEditAccountType;
-toggleIsEditCardType = () => isEditCardType = !isEditCardType;
+﻿$("#segment-edit").click(function () {
+    const selectedText = $("#MainContent_ProfileTypeList").find("option:selected").text()
+    $("#MainContent_SegmentInputBox").val(selectedText);
+    }
+)
