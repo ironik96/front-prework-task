@@ -19,6 +19,9 @@ namespace Task1
         private const string PROFILE_NAME_COLUMN = "profile_type_name";
         private const string IS_ACTIVE_COLUMN = "is_active";
 
+        // Output Parameter
+        private const string NEW_ID_PARAM = "new_id";
+
         // Procedures
         private const string GET_PROFILE_PROCEDURE = "GetProfileTypes";
         private const string CREATE_PROFILE_PROCEDURE = "CreateProfileType";
@@ -36,6 +39,18 @@ namespace Task1
             set
             {
                 ViewState["ProfileTable"] = value;
+            }
+        }
+        private string SegmentSelectedValue
+        {
+            get
+            {
+                if(ViewState["SegmentSelectedValue"] == null) return null;
+                return ViewState["SegmentSelectedValue"].ToString();
+            }
+            set
+            {
+                ViewState["SegmentSelectedValue"] = value;
             }
         }
 
@@ -56,10 +71,14 @@ namespace Task1
             // insert to datatable
             MarkTableInserted(ProfileTable);
             SegmentAdapter.InsertCommand.Parameters[$"@{PROFILE_NAME_COLUMN}"].Value = newSegmentName;
-            int effectedRows = SegmentAdapter.Update(ProfileTable);
+            SegmentAdapter.Update(ProfileTable);
+            object newIdParam = SegmentAdapter.InsertCommand.Parameters[$"@{NEW_ID_PARAM}"].Value;
 
-            if (effectedRows > 0)
-                ReadTables();
+            if (newIdParam == null)
+                return;
+
+            SegmentSelectedValue = newIdParam.ToString();
+            ReadTables();
 
 
 
@@ -93,8 +112,16 @@ namespace Task1
             int effectedRows = SegmentAdapter.Update(ProfileTable);
 
             if (effectedRows > 0)
+            {
+                SegmentSelectedValue = null;
                 ReadTables();
+            }
 
+        }
+
+        protected void List_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SegmentSelectedValue = ProfileTypeList.SelectedValue;
         }
 
         protected SqlDataAdapter CreateSegmentAdapter(SqlConnection connection)
@@ -122,6 +149,9 @@ namespace Task1
 
             // Add the parameters for the InsertCommand.
             command.Parameters.Add($"@{PROFILE_NAME_COLUMN}", SqlDbType.VarChar);
+            SqlParameter idParam = new SqlParameter($"@{NEW_ID_PARAM}", SqlDbType.Int);
+            idParam.Direction = ParameterDirection.Output;
+            command.Parameters.Add(idParam);
             adapter.InsertCommand = command;
 
             return adapter;
@@ -131,6 +161,8 @@ namespace Task1
         {
             ProfileTable = new DataTable();
             BindDropDown(SegmentAdapter, ProfileTable, ProfileTypeList, TYPE_ID_COLUMN, PROFILE_NAME_COLUMN);
+            if (SegmentSelectedValue == null) SegmentSelectedValue = ProfileTypeList.SelectedValue;
+            else ProfileTypeList.SelectedValue = SegmentSelectedValue;
         }
 
         private void BindDropDown(SqlDataAdapter DataAdapter, DataTable Table, DropDownList DropDown, string ValueField, string TextField)

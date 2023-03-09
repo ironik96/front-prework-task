@@ -4,7 +4,7 @@
     <div class="container lookup-list">
         <div class="lookup-item-container">
             <h3 class="lookup-title">Segment</h3>
-            <asp:DropDownList ID="ProfileTypeList" CssClass="type-dropdown" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="ProfileTypeList" CssClass="type-dropdown" runat="server" OnSelectedIndexChanged="List_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
             <div class="spacer"></div>
             <button id="segment-add" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add</button>
             <button id="segment-edit" type="button" class="btn btn-default" data-toggle="modal" data-target="#editModal">Edit</button>
