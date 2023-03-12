@@ -24,21 +24,57 @@ namespace Task1
         protected global::System.Web.UI.WebControls.DropDownList ProfileTypeList;
 
         /// <summary>
-        /// SegmentInputBox_Add control.
+        /// AccountTypeList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SegmentInputBox_Add;
+        protected global::System.Web.UI.WebControls.DropDownList AccountTypeList;
 
         /// <summary>
-        /// SegmentInputBox_Edit control.
+        /// CardTypeList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SegmentInputBox_Edit;
+        protected global::System.Web.UI.WebControls.DropDownList CardTypeList;
+
+        /// <summary>
+        /// TypeInputBox_Add control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TypeInputBox_Add;
+
+        /// <summary>
+        /// AddTypeButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddTypeButton;
+
+        /// <summary>
+        /// TypeInputBox_Edit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TypeInputBox_Edit;
+
+        /// <summary>
+        /// ModalType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField ModalType;
     }
 }
