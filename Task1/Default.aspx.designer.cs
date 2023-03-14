@@ -33,13 +33,22 @@ namespace Task1
         protected global::System.Web.UI.WebControls.Button submitButton;
 
         /// <summary>
-        /// GridView1 control.
+        /// SuccessMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::System.Web.UI.WebControls.Label SuccessMessage;
+
+        /// <summary>
+        /// CustomersGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView CustomersGrid;
 
         /// <summary>
         /// DetailsLink control.
