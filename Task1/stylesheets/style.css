@@ -71,4 +71,13 @@ div.spacer {
     border-color: hsl(210, 17%, 88%);
     height: 4rem;
     width: 100%;
+    min-width: max-content;
+}
+
+.gridview-dropdown {
+    padding: 0.25rem;
+    border-radius: 1rem;
+    border-color: hsl(210, 17%, 88%);
+    height: 34px;
+    min-width: max-content;
 }

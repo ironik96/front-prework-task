@@ -11,7 +11,7 @@
 
     </div>
     <div class="row">
-        <div class="col-12 alert alert-success alert-dismissable" role="alert" style="display:<%=displayAlert%>">
+        <div class="col-12 alert alert-success alert-dismissable" role="alert" style="display: <%=displayAlert%>">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
             <asp:Label ID="SuccessMessage" Text="" runat="server" />
         </div>
@@ -30,93 +30,99 @@
                     OnRowUpdating="CustomersGrid_RowUpdating"
                     OnRowDeleting="CustomersGrid_RowDeleting">
                     <Columns>
-                        <%-- Controls --%>
+                        <%-- Edit Controls --%>
                         <asp:CommandField
                             ShowEditButton="true"
                             EditText="Edit"
-                            ShowDeleteButton="true"
-                            DeleteText="Delete"
-                            HeaderText="Modify" />
+                            ControlStyle-CssClass="btn btn-default"
+                            ItemStyle-Wrap="false"
+                            ItemStyle-CssClass="text-center"/>
                         <%-- Civil Id --%>
-                        <asp:TemplateField HeaderText="Civil Id">
+                        <asp:TemplateField HeaderText="Civil Id" HeaderStyle-Width="100" ItemStyle-Width="100">
                             <ItemTemplate>
                                 <asp:Label ID="CivilIdLabel" Text='<%#Eval("civil_id")%>' runat="server" />
                             </ItemTemplate>
                         </asp:TemplateField>
                         <%-- Customer Name --%>
-                        <asp:TemplateField HeaderText="Name">
+                        <asp:TemplateField HeaderText="Name" HeaderStyle-Width="120" ItemStyle-Width="120">
                             <ItemTemplate>
                                 <asp:Label ID="Label2" Text='<%#Eval("customer_name")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtName" Text='<%#Eval("customer_name")%>' runat="server" />
+                                <asp:TextBox ID="TxtName" CssClass="form-control" Text='<%#Eval("customer_name")%>' runat="server" />
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <%-- Gender --%>
-                        <asp:TemplateField HeaderText="Gender">
+                        <asp:TemplateField HeaderText="Gender" HeaderStyle-Width="80" ItemStyle-Width="80">
                             <ItemTemplate>
                                 <asp:Label ID="Label3" Text='<%#Eval("genderString")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:DropDownList ID="GenderList" runat="server">
+                                <asp:DropDownList CssClass="gridview-dropdown" ID="GenderList" runat="server">
                                 </asp:DropDownList>
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <%-- Phone Number --%>
-                        <asp:TemplateField HeaderText="Phone Number">
+                        <asp:TemplateField HeaderText="Phone Number" HeaderStyle-Width="140" ItemStyle-Width="140">
                             <ItemTemplate>
                                 <asp:Label ID="Label4" Text='<%#Eval("phone_number")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtPhone" Text='<%#Eval("phone_number")%>' runat="server" />
+                                <asp:TextBox ID="TxtPhone" CssClass="form-control" Text='<%#Eval("phone_number")%>' runat="server" />
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <%-- Area --%>
-                        <asp:TemplateField HeaderText="Area">
+                        <asp:TemplateField HeaderText="Area" HeaderStyle-Width="60" ItemStyle-Width="60">
                             <ItemTemplate>
                                 <asp:Label ID="Label5" Text='<%#Eval("area")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtArea" Text='<%#Eval("area")%>' runat="server" />
+                                <asp:TextBox ID="TxtArea" CssClass="form-control" Text='<%#Eval("area")%>' runat="server" />
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <%-- Block --%>
-                        <asp:TemplateField HeaderText="Block">
+                        <asp:TemplateField HeaderText="Block" HeaderStyle-Width="60" ItemStyle-Width="60">
                             <ItemTemplate>
                                 <asp:Label ID="Label6" Text='<%#Eval("block_number")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtBlockNumber" Text='<%#Eval("block_number")%>' runat="server" />
+                                <asp:TextBox ID="TxtBlockNumber" CssClass="form-control" Text='<%#Eval("block_number")%>' runat="server" />
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <%-- Street --%>
-                        <asp:TemplateField HeaderText="Street">
+                        <asp:TemplateField HeaderText="Street" HeaderStyle-Width="100" ItemStyle-Width="100">
                             <ItemTemplate>
                                 <asp:Label ID="Label7" Text='<%#Eval("street")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtStreet" Text='<%#Eval("street")%>' runat="server" />
+                                <asp:TextBox ID="TxtStreet" CssClass="form-control" Text='<%#Eval("street")%>' runat="server" />
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <%-- House --%>
-                        <asp:TemplateField HeaderText="House">
+                        <asp:TemplateField HeaderText="House" HeaderStyle-Width="60" ItemStyle-Width="60">
                             <ItemTemplate>
                                 <asp:Label ID="Label8" Text='<%#Eval("house")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtHouse" Text='<%#Eval("house")%>' runat="server" />
+                                <asp:TextBox ID="TxtHouse" CssClass="form-control" Text='<%#Eval("house")%>' runat="server" />
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <%-- Segment --%>
-                        <asp:TemplateField HeaderText="Segment">
+                        <asp:TemplateField HeaderText="Segment" HeaderStyle-Width="120" ItemStyle-Width="120">
                             <ItemTemplate>
                                 <asp:Label ID="Label9" Text='<%#Eval("profile_type_name")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:DropDownList ID="SegmentList" runat="server">
+                                <asp:DropDownList CssClass="gridview-dropdown" ID="SegmentList" runat="server">
                                 </asp:DropDownList>
                             </EditItemTemplate>
                         </asp:TemplateField>
+                          <%-- Edit Controls --%>
+                        <asp:CommandField
+                            ShowDeleteButton="true"
+                            DeleteText="Delete"
+                            ControlStyle-CssClass="btn btn-danger" 
+                            ItemStyle-CssClass="text-center"/>
                     </Columns>
 
                 </asp:GridView>
