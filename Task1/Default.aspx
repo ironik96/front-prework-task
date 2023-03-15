@@ -24,11 +24,15 @@
                     runat="server"
                     AutoGenerateColumns="false"
                     DataKeyNames="civil_id"
+                    ShowFooter="true"
                     OnRowEditing="CustomersGrid_RowEditing"
                     OnRowCancelingEdit="CustomersGrid_RowCancelingEdit"
                     OnRowDataBound="CustomersGrid_RowDataBound"
                     OnRowUpdating="CustomersGrid_RowUpdating"
-                    OnRowDeleting="CustomersGrid_RowDeleting">
+                    OnRowDeleting="CustomersGrid_RowDeleting"
+                    OnRowCommand="CustomersGrid_RowCommand"
+                    OnSelectedIndexChanged="CustomersGrid_SelectedIndexChanged"
+                    >
                     <Columns>
                         <%-- Edit Controls --%>
                         <asp:CommandField
@@ -36,12 +40,15 @@
                             EditText="Edit"
                             ControlStyle-CssClass="btn btn-default"
                             ItemStyle-Wrap="false"
-                            ItemStyle-CssClass="text-center"/>
+                            ItemStyle-CssClass="text-center" />
                         <%-- Civil Id --%>
                         <asp:TemplateField HeaderText="Civil Id" HeaderStyle-Width="100" ItemStyle-Width="100">
                             <ItemTemplate>
                                 <asp:Label ID="CivilIdLabel" Text='<%#Eval("civil_id")%>' runat="server" />
                             </ItemTemplate>
+                            <FooterTemplate>
+                                <asp:TextBox ID="TxtCivilId" CssClass="form-control" runat="server" />
+                            </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Customer Name --%>
                         <asp:TemplateField HeaderText="Name" HeaderStyle-Width="120" ItemStyle-Width="120">
@@ -51,6 +58,9 @@
                             <EditItemTemplate>
                                 <asp:TextBox ID="TxtName" CssClass="form-control" Text='<%#Eval("customer_name")%>' runat="server" />
                             </EditItemTemplate>
+                            <FooterTemplate>
+                                <asp:TextBox ID="TxtNameInsert" CssClass="form-control" runat="server" />
+                            </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Gender --%>
                         <asp:TemplateField HeaderText="Gender" HeaderStyle-Width="80" ItemStyle-Width="80">
@@ -61,6 +71,10 @@
                                 <asp:DropDownList CssClass="gridview-dropdown" ID="GenderList" runat="server">
                                 </asp:DropDownList>
                             </EditItemTemplate>
+                            <FooterTemplate>
+                                <asp:DropDownList CssClass="gridview-dropdown" ID="GenderListInsert" runat="server">
+                                </asp:DropDownList>
+                            </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Phone Number --%>
                         <asp:TemplateField HeaderText="Phone Number" HeaderStyle-Width="140" ItemStyle-Width="140">
@@ -70,6 +84,9 @@
                             <EditItemTemplate>
                                 <asp:TextBox ID="TxtPhone" CssClass="form-control" Text='<%#Eval("phone_number")%>' runat="server" />
                             </EditItemTemplate>
+                            <FooterTemplate>
+                                <asp:TextBox ID="TxtPhoneInsert" CssClass="form-control" runat="server" />
+                            </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Area --%>
                         <asp:TemplateField HeaderText="Area" HeaderStyle-Width="60" ItemStyle-Width="60">
@@ -79,6 +96,9 @@
                             <EditItemTemplate>
                                 <asp:TextBox ID="TxtArea" CssClass="form-control" Text='<%#Eval("area")%>' runat="server" />
                             </EditItemTemplate>
+                            <FooterTemplate>
+                                <asp:TextBox ID="TxtAreaInsert" CssClass="form-control" runat="server" />
+                            </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Block --%>
                         <asp:TemplateField HeaderText="Block" HeaderStyle-Width="60" ItemStyle-Width="60">
@@ -88,6 +108,9 @@
                             <EditItemTemplate>
                                 <asp:TextBox ID="TxtBlockNumber" CssClass="form-control" Text='<%#Eval("block_number")%>' runat="server" />
                             </EditItemTemplate>
+                            <FooterTemplate>
+                                <asp:TextBox ID="TxtBlockNumberInsert" CssClass="form-control" runat="server" />
+                            </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Street --%>
                         <asp:TemplateField HeaderText="Street" HeaderStyle-Width="100" ItemStyle-Width="100">
@@ -97,6 +120,9 @@
                             <EditItemTemplate>
                                 <asp:TextBox ID="TxtStreet" CssClass="form-control" Text='<%#Eval("street")%>' runat="server" />
                             </EditItemTemplate>
+                            <FooterTemplate>
+                                <asp:TextBox ID="TxtStreetInsert" CssClass="form-control" runat="server" />
+                            </FooterTemplate>
                         </asp:TemplateField>
                         <%-- House --%>
                         <asp:TemplateField HeaderText="House" HeaderStyle-Width="60" ItemStyle-Width="60">
@@ -106,6 +132,9 @@
                             <EditItemTemplate>
                                 <asp:TextBox ID="TxtHouse" CssClass="form-control" Text='<%#Eval("house")%>' runat="server" />
                             </EditItemTemplate>
+                            <FooterTemplate>
+                                <asp:TextBox ID="TxtHouseInsert" CssClass="form-control" runat="server" />
+                            </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Segment --%>
                         <asp:TemplateField HeaderText="Segment" HeaderStyle-Width="120" ItemStyle-Width="120">
@@ -116,21 +145,32 @@
                                 <asp:DropDownList CssClass="gridview-dropdown" ID="SegmentList" runat="server">
                                 </asp:DropDownList>
                             </EditItemTemplate>
+                            <FooterTemplate>
+                                <asp:DropDownList CssClass="gridview-dropdown" ID="SegmentListInsert" runat="server">
+                                </asp:DropDownList>
+                            </FooterTemplate>
                         </asp:TemplateField>
-                          <%-- Edit Controls --%>
-                        <asp:CommandField
-                            ShowDeleteButton="true"
-                            DeleteText="Delete"
-                            ControlStyle-CssClass="btn btn-danger" 
-                            ItemStyle-CssClass="text-center"/>
+                        <%-- Controls --%>
+                        <asp:TemplateField ItemStyle-CssClass="text-center" FooterStyle-CssClass="text-center">
+                            <ItemTemplate>
+                                <asp:LinkButton CssClass="btn btn-primary" runat="server" CommandName="Select">Details</asp:LinkButton>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:LinkButton CssClass="btn btn-danger"
+                                    Text="Delete"
+                                    CommandName="Delete"
+                                    runat="server" />
+                            </EditItemTemplate>
+                            <FooterTemplate>
+                                <asp:LinkButton CssClass="btn btn-primary" runat="server" CommandName="Insert">Add</asp:LinkButton>
+                            </FooterTemplate>
+                        </asp:TemplateField>
+
                     </Columns>
 
                 </asp:GridView>
             </div>
         </div>
-    </div>
-    <div class="row text-center">
-        <asp:LinkButton ID="DetailsLink" CssClass="btn btn-primary" runat="server" Visible="false" OnClick="DetailsLink_Click">Customer Details</asp:LinkButton>
     </div>
 
 </asp:Content>

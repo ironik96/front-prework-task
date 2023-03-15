@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -20,7 +22,8 @@ namespace Task1
 
         protected string displayAlert
         {
-            get {
+            get
+            {
                 return SuccessMessage.Text == String.Empty ? "none" : "block";
             }
         }
@@ -36,21 +39,26 @@ namespace Task1
             BindCustomers(input);
 
         }
-
-        protected void DetailsLink_Click(object sender, EventArgs e)
+        protected void CustomersGrid_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string civilId = CustomersGrid.SelectedDataKey.Value.ToString();
             EncryptionService service = new EncryptionService();
-            string maskedCivilID = service.Encrypt(inputTextBox.Text);
+            string maskedCivilID = service.Encrypt(civilId);
             Response.Redirect($"CustomerDetails.aspx?civil_id={maskedCivilID}");
         }
 
         protected void CustomersGrid_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            bool bindLists = IsEditState(e.Row) && IsDataType(e.Row);
-            if (!bindLists) return;
+            if (IsFooterType(e.Row)) {
+                BindSegmentList(e.Row, "SegmentListInsert");
+                BindGenderList(e.Row, "GenderListInsert");
+            }
+            if (IsEditState(e.Row) && IsDataType(e.Row))
+            {
+                BindSegmentList(e.Row, "SegmentList");
+                BindGenderList(e.Row, "GenderList");
+            }
 
-            BindSegmentList(e.Row);
-            BindGenderList(e.Row);
 
         }
         protected void CustomersGrid_RowEditing(object sender, GridViewEditEventArgs e)
@@ -82,8 +90,22 @@ namespace Task1
             BindCustomers();
             SetSuccessMessage("Customer Updated Successfully!");
         }
-        protected void CustomersGrid_RowCreated(object sender, GridViewRowEventArgs e)
+        protected void CustomersGrid_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            if (e.CommandName != "Insert") return;
+            GridViewRow row = CustomersGrid.FooterRow;
+            string civilId = TextBoxControlText("TxtCivilId", row);
+            string customerName = TextBoxControlText("TxtNameInsert", row);
+            bool gender = bool.Parse(DropDownControlValue("GenderListInsert", row));
+            string phoneNumber = TextBoxControlText("TxtPhoneInsert", row);
+            string area = TextBoxControlText("TxtAreaInsert", row);
+            int blockNumber = int.Parse(TextBoxControlText("TxtBlockNumberInsert", row));
+            string street = TextBoxControlText("TxtStreetInsert", row);
+            string house = TextBoxControlText("TxtHouseInsert", row);
+            int profileTypeId = int.Parse(DropDownControlValue("SegmentListInsert", row));
+
+            InsertCustomer(civilId, customerName, gender, phoneNumber, area, blockNumber, street, house, profileTypeId);
+            BindCustomers();
             SetSuccessMessage("Customer Added Successfully!");
         }
         protected void CustomersGrid_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -157,6 +179,27 @@ namespace Task1
             }
 
         }
+        private void InsertCustomer(string civilId, string customerName, bool gender, string phoneNumber, string area, int blockNumber, string street, string house, int profileTypeId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("CreateCustomerProfile", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@civil_id", SqlDbType.Decimal).Value = Decimal.Parse(civilId);
+                command.Parameters.AddWithValue("@customer_name", SqlDbType.VarChar).Value = customerName;
+                command.Parameters.AddWithValue("@gender", SqlDbType.Bit).Value = gender;
+                command.Parameters.AddWithValue("@phone_number", SqlDbType.Decimal).Value = Decimal.Parse(phoneNumber);
+                command.Parameters.AddWithValue("@area", SqlDbType.VarChar).Value = area;
+                command.Parameters.AddWithValue("@block_number", SqlDbType.Int).Value = blockNumber;
+                command.Parameters.AddWithValue("@street", SqlDbType.VarChar).Value = street;
+                command.Parameters.AddWithValue("@house", SqlDbType.VarChar).Value = house;
+                command.Parameters.AddWithValue("@profile_type_id", SqlDbType.Int).Value = profileTypeId;
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+
+        }
         private void DeleteCustomer(string civilId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -170,35 +213,29 @@ namespace Task1
             }
 
         }
-        private void BindSegmentList(GridViewRow row)
+        private void BindSegmentList(GridViewRow row, string controlId)
         {
+            var segmentList = row.FindControl(controlId) as DropDownList;
+            segmentList.DataSource = ProfileTypeTable;
+            segmentList.DataValueField = "id";
+            segmentList.DataTextField = "profile_type_name";
+            segmentList.DataBind();
+            if (controlId != "SegmentList") return;
             string selectedProfileTypeId = (row.DataItem as DataRowView)["profile_type_id"].ToString();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = new SqlCommand("GetProfileTypes", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                DataTable segmentTable = new DataTable();
-                SqlDataAdapter adapter = new SqlDataAdapter(command);
-                adapter.Fill(segmentTable);
-                var segmentList = row.FindControl("SegmentList") as DropDownList;
-                segmentList.DataSource = segmentTable;
-                segmentList.DataValueField = "id";
-                segmentList.DataTextField = "profile_type_name";
-                segmentList.DataBind();
-                segmentList.SelectedValue=selectedProfileTypeId;
-            }
+            segmentList.SelectedValue = selectedProfileTypeId;
+
         }
-        private void BindGenderList(GridViewRow row)
+        private void BindGenderList(GridViewRow row, string controlId)
         {
-            string selectedGender = (row.DataItem as DataRowView)["gender"].ToString();
-            var genderList = row.FindControl("GenderList") as DropDownList;
-            
+            var genderList = row.FindControl(controlId) as DropDownList;
+
             genderList.DataSource = GenderTable;
             genderList.DataValueField = "Value";
             genderList.DataTextField = "Text";
             genderList.DataBind();
+            if (controlId != "GenderList") return;
+            string selectedGender = (row.DataItem as DataRowView)["gender"].ToString();
             genderList.SelectedValue = selectedGender;
-
         }
         private void SetSuccessMessage(string message)
         {
@@ -212,11 +249,35 @@ namespace Task1
         {
             return row.RowState.HasFlag(DataControlRowState.Edit);
         }
+        private bool IsInsertState(GridViewRow row)
+        {
+            return row.RowState.HasFlag(DataControlRowState.Insert);
+        }
         private bool IsDataType(GridViewRow row)
         {
             return row.RowType == DataControlRowType.DataRow;
         }
+        private bool IsFooterType(GridViewRow row)
+        {
+            return row.RowType == DataControlRowType.Footer;
+        }
 
+
+        private DataTable ProfileTypeTable
+        {
+            get
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand("GetProfileTypes", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    DataTable segmentTable = new DataTable();
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(segmentTable);
+                    return segmentTable;
+                }
+            }
+        }
         private DataTable GenderTable
         {
             get
@@ -237,5 +298,7 @@ namespace Task1
                 return genderTable;
             }
         }
+
+        
     }
 }
