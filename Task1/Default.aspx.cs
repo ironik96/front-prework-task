@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using System.Web.Routing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Xml.Linq;
 using Task1.Services;
 
 namespace Task1
@@ -35,8 +27,8 @@ namespace Task1
         }
         protected void SearchButton_Click(object sender, EventArgs e)
         {
-            string input = inputTextBox.Text;
-            BindCustomers(input);
+            string searchQuery = inputTextBox.Text;
+            BindCustomers(searchQuery);
 
         }
         protected void CustomersGrid_SelectedIndexChanged(object sender, EventArgs e)
@@ -262,7 +254,10 @@ namespace Task1
             return row.RowType == DataControlRowType.Footer;
         }
 
-
+        private bool validCustomerInformation(string civilId, string customerName, bool gender, string phoneNumber, string area, int blockNumber, string street, string house, int profileTypeId)
+        {
+            return true;
+        }
         private DataTable ProfileTypeTable
         {
             get

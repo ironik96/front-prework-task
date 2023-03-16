@@ -31,8 +31,7 @@
                     OnRowUpdating="CustomersGrid_RowUpdating"
                     OnRowDeleting="CustomersGrid_RowDeleting"
                     OnRowCommand="CustomersGrid_RowCommand"
-                    OnSelectedIndexChanged="CustomersGrid_SelectedIndexChanged"
-                    >
+                    OnSelectedIndexChanged="CustomersGrid_SelectedIndexChanged">
                     <Columns>
                         <%-- Edit Controls --%>
                         <asp:CommandField
@@ -47,7 +46,7 @@
                                 <asp:Label ID="CivilIdLabel" Text='<%#Eval("civil_id")%>' runat="server" />
                             </ItemTemplate>
                             <FooterTemplate>
-                                <asp:TextBox ID="TxtCivilId" CssClass="form-control" runat="server" />
+                                <asp:TextBox ID="TxtCivilId" placeholder="civil id" MaxLength="12" CssClass="form-control" runat="server" />
                             </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Customer Name --%>
@@ -56,10 +55,10 @@
                                 <asp:Label ID="Label2" Text='<%#Eval("customer_name")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtName" CssClass="form-control" Text='<%#Eval("customer_name")%>' runat="server" />
+                                <asp:TextBox ID="TxtName" placeholder="Name" CssClass="form-control" Text='<%#Eval("customer_name")%>' runat="server" />
                             </EditItemTemplate>
                             <FooterTemplate>
-                                <asp:TextBox ID="TxtNameInsert" CssClass="form-control" runat="server" />
+                                <asp:TextBox ID="TxtNameInsert" placeholder="Name" CssClass="form-control" runat="server" />
                             </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Gender --%>
@@ -82,10 +81,10 @@
                                 <asp:Label ID="Label4" Text='<%#Eval("phone_number")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtPhone" CssClass="form-control" Text='<%#Eval("phone_number")%>' runat="server" />
+                                <asp:TextBox ID="TxtPhone" placeholder="phone number" MaxLength="8" CssClass="form-control" Text='<%#Eval("phone_number")%>' runat="server" />
                             </EditItemTemplate>
                             <FooterTemplate>
-                                <asp:TextBox ID="TxtPhoneInsert" CssClass="form-control" runat="server" />
+                                <asp:TextBox ID="TxtPhoneInsert" placeholder="phone number" MaxLength="8" CssClass="form-control" runat="server" />
                             </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Area --%>
@@ -94,22 +93,22 @@
                                 <asp:Label ID="Label5" Text='<%#Eval("area")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtArea" CssClass="form-control" Text='<%#Eval("area")%>' runat="server" />
+                                <asp:TextBox ID="TxtArea" placeholder="area" CssClass="form-control" Text='<%#Eval("area")%>' runat="server" />
                             </EditItemTemplate>
                             <FooterTemplate>
-                                <asp:TextBox ID="TxtAreaInsert" CssClass="form-control" runat="server" />
+                                <asp:TextBox ID="TxtAreaInsert" placeholder="area" CssClass="form-control" runat="server" />
                             </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Block --%>
-                        <asp:TemplateField HeaderText="Block" HeaderStyle-Width="60" ItemStyle-Width="60">
+                        <asp:TemplateField HeaderText="Block" HeaderStyle-Width="80" ItemStyle-Width="80">
                             <ItemTemplate>
                                 <asp:Label ID="Label6" Text='<%#Eval("block_number")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtBlockNumber" CssClass="form-control" Text='<%#Eval("block_number")%>' runat="server" />
+                                <asp:TextBox ID="TxtBlockNumber" placeholder="block" CssClass="form-control" Text='<%#Eval("block_number")%>' runat="server" />
                             </EditItemTemplate>
                             <FooterTemplate>
-                                <asp:TextBox ID="TxtBlockNumberInsert" CssClass="form-control" runat="server" />
+                                <asp:TextBox ID="TxtBlockNumberInsert" placeholder="block" CssClass="form-control" runat="server" />
                             </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Street --%>
@@ -118,22 +117,22 @@
                                 <asp:Label ID="Label7" Text='<%#Eval("street")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtStreet" CssClass="form-control" Text='<%#Eval("street")%>' runat="server" />
+                                <asp:TextBox ID="TxtStreet" placeholder="street" CssClass="form-control" Text='<%#Eval("street")%>' runat="server" />
                             </EditItemTemplate>
                             <FooterTemplate>
-                                <asp:TextBox ID="TxtStreetInsert" CssClass="form-control" runat="server" />
+                                <asp:TextBox ID="TxtStreetInsert" placeholder="street" CssClass="form-control" runat="server" />
                             </FooterTemplate>
                         </asp:TemplateField>
                         <%-- House --%>
-                        <asp:TemplateField HeaderText="House" HeaderStyle-Width="60" ItemStyle-Width="60">
+                        <asp:TemplateField HeaderText="House" HeaderStyle-Width="80" ItemStyle-Width="80">
                             <ItemTemplate>
                                 <asp:Label ID="Label8" Text='<%#Eval("house")%>' runat="server" />
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox ID="TxtHouse" CssClass="form-control" Text='<%#Eval("house")%>' runat="server" />
+                                <asp:TextBox ID="TxtHouse" placeholder="house" CssClass="form-control" Text='<%#Eval("house")%>' runat="server" />
                             </EditItemTemplate>
                             <FooterTemplate>
-                                <asp:TextBox ID="TxtHouseInsert" CssClass="form-control" runat="server" />
+                                <asp:TextBox ID="TxtHouseInsert" placeholder="house" CssClass="form-control" runat="server" />
                             </FooterTemplate>
                         </asp:TemplateField>
                         <%-- Segment --%>
@@ -172,5 +171,6 @@
             </div>
         </div>
     </div>
+
 
 </asp:Content>
