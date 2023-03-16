@@ -12,7 +12,13 @@ namespace Task1
     {
         readonly private string connectionString = ConfigurationManager.ConnectionStrings["CustomerAccount"].ConnectionString;
 
-        protected string displayAlert
+        private string searchQuery
+        {
+            get { return ViewState["searchQuery"]?.ToString() ?? ""; }
+            set { ViewState["searchQuery"] = value; }
+        }
+
+    protected string displayAlert
         {
             get
             {
@@ -27,9 +33,8 @@ namespace Task1
         }
         protected void SearchButton_Click(object sender, EventArgs e)
         {
-            string searchQuery = inputTextBox.Text;
-            BindCustomers(searchQuery);
-
+            searchQuery = inputTextBox.Text;
+            BindCustomers();
         }
         protected void CustomersGrid_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -108,14 +113,14 @@ namespace Task1
 
         }
 
-        private void BindCustomers(string civilId = "")
+        private void BindCustomers()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand("GetCustomerProfile", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                if (civilId.Length != 0)
-                    command.Parameters.AddWithValue("@civil_id", SqlDbType.Decimal).Value = Decimal.Parse(civilId);
+                if (searchQuery.Length == 12)
+                    command.Parameters.AddWithValue("@civil_id", SqlDbType.Decimal).Value = Decimal.Parse(searchQuery);
 
 
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
